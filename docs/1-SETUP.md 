@@ -62,3 +62,52 @@ Update your `package.json` if necessary, `lint-staged` entry should looks:
     "*.{ts,css,md}": "prettier --write"
 }
 ```
+
+## Auto versioning
+
+We'll use [auto-changelog](https://github.com/cookpete/auto-changelog), a command line tool for generating a changelog from git tags and commit history.
+
+```sh
+% npm install auto-changelog -g
+% npm install auto-changelog --save-dev
+```
+
+Add `auto-changelog -p && git add CHANGELOG.md` to the version scripts in your `package.json`:
+
+```json
+{
+  "name": "my-awesome-package",
+  "version": "1.0.0",
+  "devDependencies": {
+    "auto-changelog": "*"
+  },
+  "scripts": {
+    "version": "auto-changelog -p && git add CHANGELOG.md"
+  }
+}
+```
+
+Now every time you run [npm version](https://docs.npmjs.com/cli/version), the changelog will automatically update and be part of the version commit.
+
+For ex. `npm version patch -m "Upgrade to %s for reasons"`
+
+If supplied with `-m` config option, npm will use it as a commit message when creating a version commit. If the message config contains `%s` then that will be replaced with the resulting version number. By default the commit msg is the version number.
+
+## Dependabot - Automated dependency updates
+
+Keeping your dependencies updated is one of the easiest ways to keep the software you build secure. [Dependabot](https://michaelcurrin.github.io/dev-cheatsheets/cheatsheets/version-control/github/dependabot.html) alleviates that pain by updating your dependencies automatically.
+
+```sh
+% mkdir .github
+% vi .github/dependabot.yml
+
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+```
