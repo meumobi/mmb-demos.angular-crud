@@ -1,0 +1,7 @@
+<ng-container *ngIf="item !== undefined; else loading">
+  <div *ngIf="item !== null; else empty">
+    <h2>{{ item.title }}</h2>
+  </div>
+</ng-container>
+<ng-template #loading>Loading...</ng-template>
+<ng-template #empty>Item not found!</ng-template>

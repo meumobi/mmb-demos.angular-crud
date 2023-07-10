@@ -1,0 +1,9 @@
+<ng-container *ngIf="items$ | async as items; else loading">
+  <div *ngIf="items.length > 0; else empty">
+    <ul *ngFor="let item of items">
+      <li routerLink="/items/detail/{{ item.id }}">{{ item.title }}</li>
+    </ul>
+  </div>
+</ng-container>
+<ng-template #loading>Loading...</ng-template>
+<ng-template #empty>No items found!</ng-template>
